@@ -64,7 +64,7 @@ typedef void genf(void);
 #ifdef PTR64
 typedef UINT64 FPTR;
 #else
-typedef UINT32 FPTR;
+typedef uintptr_t FPTR;
 #endif
 
 // pen_t is used to represent pixel values in bitmaps

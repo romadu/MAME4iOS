@@ -278,7 +278,7 @@ const device_type name = configclass::static_alloc_device_config
 // inline device configurations that require 32 bits of storage in the token
 #define MDRV_DEVICE_CONFIG_DATA32_EXPLICIT(_size, _offset, _val) \
 	TOKEN_UINT32_PACK3(MCONFIG_TOKEN_DEVICE_CONFIG_DATA32, 8, _size, 4, _offset, 12), \
-	TOKEN_UINT32((UINT32)(_val)),
+	TOKEN_UINT32((int)(size_t)(_val)),
 
 #define MDRV_DEVICE_CONFIG_DATA32(_struct, _field, _val) \
 	MDRV_DEVICE_CONFIG_DATA32_EXPLICIT(structsizeof(_struct, _field), offsetof(_struct, _field), _val)

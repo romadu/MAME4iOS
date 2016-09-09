@@ -22,7 +22,7 @@
 /* tokens per item */
 #define TOKENS_PER_PTR			(1)
 #define TOKENS_PER_UINT32		(1)
-#define TOKENS_PER_UINT64		(8 / sizeof(FPTR))
+#define TOKENS_PER_UINT64		(8 / sizeof(size_t))
 #define TOKENS_PER_ATTOTIME		(TOKENS_PER_UINT32 + TOKENS_PER_UINT64)
 
 
@@ -65,18 +65,18 @@ struct _generic_token
 #if (defined(__GNUC__) && (__GNUC__ >= 3) && !defined(__cplusplus)) || (defined(_STDC_VERSION__) && (__STDC_VERSION__ >= 199901L))
 #define TOKEN_VALUE(field,a)	{ .field = (a) }
 #else
-#define TOKEN_VALUE(field,a)	{ (FPTR)(a) }
+#define TOKEN_VALUE(field,a)	{ (int)(size_t)(a) }
 #endif
 
 /* token output primitives */
 /* note that regardless of the endianness, UINT64s are packed LSW first */
 #define TOKEN_PTR(field,p)		TOKEN_VALUE(field, p)
 #define TOKEN_STRING(p)			TOKEN_VALUE(stringptr, p)
-#define TOKEN_UINT32(a)			TOKEN_VALUE(i, a)
+#define TOKEN_UINT32(a)			TOKEN_VALUE((int)(size_t)i, a)
 #ifdef PTR64
 #define TOKEN_UINT64(a)			TOKEN_VALUE(i, a)
 #else
-#define TOKEN_UINT64(a)			TOKEN_VALUE(i, (UINT32)(a)), TOKEN_VALUE(i, (UINT32)((a) >> 32))
+#define TOKEN_UINT64(a)			TOKEN_VALUE(i, (int)(size_t)(a)), TOKEN_VALUE(i, (int)(size_t)((a) >> 32))
 #endif
 
 /* mask a value to a fixed number of bits and then shift it */
@@ -139,13 +139,13 @@ struct _generic_token
 #define TOKEN_UNGET_PTR(tp)			((tp)--)
 #define TOKEN_UNGET_STRING(tp)		((tp)--)
 #define TOKEN_UNGET_UINT32(tp)		((tp)--)
-#define TOKEN_UNGET_UINT64(tp)		((tp) -= 8 / sizeof(FPTR))
+#define TOKEN_UNGET_UINT64(tp)		((tp) -= 8 / sizeof(size_t))
 
 /* token skip primitives */
 #define TOKEN_SKIP_PTR(tp)			((tp)++)
 #define TOKEN_SKIP_STRING(tp)		((tp)++)
 #define TOKEN_SKIP_UINT32(tp)		((tp)++)
-#define TOKEN_SKIP_UINT64(tp)		((tp) += 8 / sizeof(FPTR))
+#define TOKEN_SKIP_UINT64(tp)		((tp) += 8 / sizeof(size_t))
 
 /* extract a value from a fixed number of bits; if bits is negative, treat it as a signed value */
 #define UNSHIFT_AND_MASK32(src, val, bits, shift)	do { \
