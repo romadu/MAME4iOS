@@ -346,7 +346,7 @@ INLINE void *compare_exchange_ptr(void * volatile *ptr, void *compare, void *exc
 	result = compare_exchange64((INT64 volatile *)ptr, (INT64)compare, (INT64)exchange);
 #else
 	INT32 result;
-	result = compare_exchange32((INT32 volatile *)ptr, (INT32)compare, (INT32)exchange);
+	result = compare_exchange32((INT32 volatile *)ptr, (int)(size_t)compare, (int)(size_t)exchange);
 #endif
 	return (void *)result;
 }

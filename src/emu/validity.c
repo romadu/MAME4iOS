@@ -32,7 +32,7 @@
 #ifdef PTR64
 UINT8 your_ptr64_flag_is_wrong[(int)(sizeof(void *) - 7)];
 #else
-UINT8 your_ptr64_flag_is_wrong[(int)(5 - sizeof(void *))];
+UINT8 your_ptr64_flag_is_wrong[(int)(9 - sizeof(void *))];
 #endif
 
 
